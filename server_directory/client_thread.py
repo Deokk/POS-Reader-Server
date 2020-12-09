@@ -9,12 +9,12 @@ import dbConnector
 
 def work(conn: socket):
     try:
+        db = dbConnector.dbConnector('localhost', 3306, 'root', '0000', 'software_engineering');
+        print("dbConnection successed!")
+        db.set_store_open()
         while True:
             company_id = int((conn.recv(4)).decode())
             job_number = int((conn.recv(4)).decode())
-
-            db = dbConnector.dbConnector('localhost', 3306, 'root', '0000', 'software_engineering');
-            print("dbConnection successed!")
 
             print(f"socket: c_id: {company_id}, j_num: {job_number} received")
             if job_number == 0:  # 매장 신규 생성 시그널
@@ -73,9 +73,11 @@ def work(conn: socket):
 
     except ValueError:
         print('input data incorrect')
+        db.set_store_close()
         conn.close()
     except ConnectionError:
         print('Connection lost')
+        db.set_store_close()
         conn.close()
 
 
@@ -95,6 +97,5 @@ class socket_communicator:
             self.s.listen(1)
             conn, addr = self.s.accept()
             print(f"connected to {addr[0]}")
-            # 데이터베이스에서 open 켜기
             t = threading.Thread(target=work, args=(conn,))
             t.start()
