@@ -29,7 +29,7 @@ class dbConnector:
 
     def register_new_store(self,id:str, name:str, loc:str, maxSpace:int, open:int=0):
         str_for_info = "INSERT INTO store_info (storeID, storeName, storeLocation, maxSpace) VALUES ("+id+", '" + name+"', '"+loc+"', "+maxSpace+");"
-        str_for_status = "INSERT INTO store_status (storeID, open, currentStatus) VALUES ("+id+", " +str(open)+", 0);"
+        str_for_status = "INSERT INTO store_info (storeID, open, currentStatus) VALUES ("+id+", " +str(open)+", 0);"
 
         print(str_for_info)
         self.excute_query(str_for_info)
@@ -39,7 +39,7 @@ class dbConnector:
         return True;
 
     def delete_store(self, id:str):
-        str_for_status = "delete from store_status where storeID = "+id
+        str_for_status = "delete from store_info where storeID = "+id
         str_for_info = "delete from store_info where storeID = " + id
 
         self.excute_query(str_for_status)
@@ -57,7 +57,7 @@ class dbConnector:
 
     def set_current_status(self,id:str, current_status:int):
         try:
-            self.excute_query("UPDATE store_status SET maxSpace = "+str(current_status)+" where storeID = "+id+");")
+            self.excute_query("UPDATE store_info SET maxSpace = "+str(current_status)+" where storeID = "+id+");")
             self.connector.commit()
             return True
         except:
@@ -65,7 +65,7 @@ class dbConnector:
 
     def get_current_status(self,id:str):
         try:
-            target = " SELECT currentStatus FROM store_status where storeID = "+id+";"
+            target = " SELECT currentStatus FROM store_info where storeID = "+id+";"
             answer = self.excute_query(target)
             print(type(answer))
             print(answer)
@@ -76,7 +76,7 @@ class dbConnector:
 
     def set_store_open(self, id:str):
         try:
-            self.excute_query("UPDATE store_status SET currentStatus = 1 where storeID = "+id+");")
+            self.excute_query("UPDATE store_info SET currentStatus = 1 where storeID = "+id+");")
             self.connector.commit()
             return True
         except:
@@ -84,7 +84,7 @@ class dbConnector:
 
     def set_store_close(self, id:str):
         try:
-            self.excute_query("UPDATE store_status SET open = 0 where storeID = "+id+");")
+            self.excute_query("UPDATE store_info SET open = 0 where storeID = "+id+");")
             self.connector.commit()
             return True
         except:
@@ -92,7 +92,7 @@ class dbConnector:
 
     def get_store_open(self,id:str):
         try:
-            target = " SELECT open FROM store_status where storeID = "+id+";"
+            target = " SELECT open FROM store_info where storeID = "+id+";"
             answer = self.excute_query(target)
             print(type(answer))
             print(answer)
@@ -172,6 +172,15 @@ class dbConnector:
         response_as_numpy = np.array(ast.literal_eval(temp))
         return response_as_numpy.astype('uint-8')
 
+    def get_last_id(self):
+        target = """select storeID from store_info order by storeID desc limit 1;"""
+        response = self.excute_query(target)
+        if(response==()):
+            print("generate new id")
+            return 100
+        temp = response[0].get('storeID')
+        return int(temp)
+
     def array_to_string(self,array):
         target_string = "["
         if np.size(array) is np.size(array, axis=0): # 1차원 배열
@@ -187,7 +196,6 @@ class dbConnector:
                 if i is not np.size(array,axis=0)-1:
                     target_string +=", "
             target_string = target_string + "]"
-        print(target_string)
         return target_string
 
     def array_input_valid(self, array):
