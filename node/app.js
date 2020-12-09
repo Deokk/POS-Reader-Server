@@ -1,37 +1,26 @@
-const app = require('express')();
-const fs = require('fs');
-const hls = require('hls-server');
+// 모듈 호출 및 객체 생성
+const bodyParser = require('body-parser');
+const express = require('express');
+const app = express();
+const port = 3000;
+const methodOverride = require('method-override');
+const router = require('./routes/home') (app);
 
-app.get('/', (req, res) => {
-    return res.status(200).sendFile(`${__dirname}/client.html`);
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended:true}));
+// views/home으로 ejs 파일의 위치 지정
+app.set('views', __dirname + '/views/home');
+// 서버가 HTML 랜더링을 할 때 EJS 엔진을 사용하도록 설정
+app.set('view engine', 'ejs');
+app.engine('html', require('ejs').renderFile);
+// 정적 파일을 다루기 위한 코드 (css파일)
+app.use(express.static(__dirname+'/public'));
+// PUT, DELETE method 허옹
+app.use(methodOverride('_method'));
+
+// 서버를 연결하고 function() 이용
+const server = app.listen(port, function() {
+    console.log(`Example app listening at http://localhost:${port}`);
 });
 
-const server = ap.listen(3000);
 
-new hls(server, {
-    provider: {
-        exists: (req, cb) => {
-            const ext = req.url.aplit('.').pop();
-
-            if (ext !== 'm3u8' && ext !== 'ts') {
-                return cb(null, true);
-            }
-
-            fs.access(__dirname + req.url, fs.constants.F_OK, function (err) {
-                if (err) {
-                    console.log('File not exist');
-                    return cb(null, false);
-                }
-                cb(null, true);
-            });
-        },
-        getManifestStream: (req, cb) => {
-            const stream = fs.createReadStream(__dirname + req.url);
-            cb(null, stream);
-        },
-        getSegmentStream: (req, cb) => {
-            const stream = fs.createReadStream(__dirname + req.url);
-            cb(null, stream);
-        }
-    }
-});
