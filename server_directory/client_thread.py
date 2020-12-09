@@ -46,7 +46,15 @@ def work(conn: socket):
                     text = conn.recv(text_size).decode()
                     print(setting, text)
                     # 데이터베이스 매장명 변경 진행
-                    pass
+                    if setting == 0:
+                        # 매장명
+                        pass
+                    elif setting == 2:
+                        # 매장주소
+                        pass
+                    elif setting == 3:
+                        # 수용인원
+                        pass
 
     except ValueError:
         print('input data incorrect')
