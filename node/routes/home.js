@@ -13,7 +13,7 @@ module.exports = function(app) {
         var sql = 'SELECT * FROM store_info'
         conn.query(sql, function(err, rows, fields) {
             if(err) console.log('query is not excuted. select fail...\n' + err);
-            else res.render('list.ejs');
+            else res.render('list.ejs', {list : rows});
         });
     });
 }

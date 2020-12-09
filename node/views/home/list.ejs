@@ -15,8 +15,15 @@
       <h5>Market List From DataBase</h5>
 
       <ul>
-        <li><a href="/list" class="nav-link">대박 포차 궁동점</a></li>
-        <li><a href="/list" class="nav-link">태평소 국밥 봉명점</a></li>
+        <% for(i = 0; i < list.length; i++) { %>
+          <ul>
+              <li><a href="/list" class="nav-link"><%=i+1%></a></li>
+              <li><%=list[i].storeName %></li>
+              <li><%=list[i].storeLocation %></li>
+          </tr>
+          <br>
+          <br>
+        <% } %>
       </ul>
 
     </div>
