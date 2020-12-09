@@ -1,17 +1,18 @@
 import numpy as np
 
 
-def get_table(img, table_info):
+def get_table(img, table_info, color):
+    score = []
     for num, i in enumerate(table_info):
-        if not (img[int(i[0])][int(i[1])] == i[2]):
-            if i[3]:
-                table_info[num] = [int(i[0]), int(i[1]), img[int(i[0])][int(i[1])], 0]
-            else:
-                table_info[num] = [int(i[0]), int(i[1]), img[int(i[0])][int(i[1])], 1]
+        if img[int(i[0])][int(i[1])] == color:
+            score.append(0)
+        else:
+            score.append(1)
+
+    score = np.array(score)
+    return score
 
 
-def calc_rate(img, info):
-    table_info = info
-    get_table(img, table_info)
-    table = np.array(table_info).T
-    return info[2], (table[3][:]).mean()
+def calc_rate(img, info, color):
+    rate = get_table(img, info, color)
+    return rate.mean()

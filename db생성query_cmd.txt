@@ -1,5 +1,5 @@
 create database software_engineering_test;
-use software_engineering_test;
+use software_engineering;
 create table store_info(
 storeID int not null auto_increment primary key,
 storeName varchar(20) not null,
@@ -16,5 +16,6 @@ alter table store_status add constraint rule1 foreign key (storeID)
 references store_info (storeID) ON UPDATE CASCADE;
 alter table store_status add constraint rule2 foreign key (storeID)
 references store_info (storeID) ON DELETE CASCADE;
+alter table store_info add emptyColor tinyint unsigned not null default 255;
 desc store_status;
 desc store_info;
