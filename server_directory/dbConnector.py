@@ -1,6 +1,6 @@
 import pymysql
-import json
 import numpy as np
+import ast
 """
 design pattern :: Adapter
 """
@@ -137,23 +137,56 @@ class dbConnector:
             return False
 
     def set_table_loc_list(self, id:str,array):
+        array = np.asarray(array)
+        if not self.array_input_valid(array):
+            return False
         array = self.array_to_string(array)
-        sql_command = """update store_info set tableLocList = ('["""+array+"""]') where storeID="""+id+"""; """
+        sql_command = """update store_info set tableLocList = ('"""+array+"""') where storeID="""+id+"""; """
         self.excute_query(sql_command,id)
         self.connector.commit()
         return False
 
-    def get_table_loc_list(self):
-        return False;
+    def get_table_loc_list(self, id):
+        target = """ SELECT tableLocList FROM store_info where storeID = """ + id + """;"""
+        response = self.excute_query(target)
+        temp = response[0].get('tableLocList')
+        response_as_numpy = np.array(ast.literal_eval(temp))
+        print(np.shape(response_as_numpy))
+        print(response_as_numpy)
+        return response_as_numpy
+
     def array_to_string(self,array):
-        array = np.asarray(array)
-        target_string = ""
-        for i in range(np.size(array)-1):
-            target_string = target_string+str(array[i])+", "
-        target_string = target_string+str(array[-1])
+        target_string = "["
+        if np.size(array) is np.size(array, axis=0): # 1차원 배열
+            for i in range(np.size(array) - 1):
+                target_string = target_string + str(array[i]) + ", "
+            target_string = target_string + str(array[-1])+"]"
+        else:
+            for i in range(np.size(array, axis=0)):
+                target_string = target_string + "["
+                for j in range(np.size(array,axis=1) - 1):
+                    target_string = target_string + str(array[i][j]) + ", "
+                target_string = target_string + str(array[i][-1]) + "]"
+                if i is not np.size(array,axis=0)-1:
+                    target_string +=", "
+            target_string = target_string + "]"
+        print(target_string)
         return target_string
 
-
-
-  
+    def array_input_valid(self, array):
+        # case : array가 1차원 (가게에 테이블이 하나면서 x, y가 있는 경우)
+        if np.size(array, axis=0) is np.size(array):
+            if np.size(array) is 4:
+                return True
+            else:
+                print("x,y,color,bool중 누락된 것이 있거나 값이 더 들어왔습니다.")
+                print("들어온 데이터의 개수 : {}".format(np.size(array)))
+                return False
+        else:
+            if np.size(array, axis=1) is 4:
+                return True
+            else:
+                print("x,y,color,bool 중 누락된 것이 있거나 값이 더 들어왔습니다.")
+                print("들어온 데이터의 개수 : {}".format(np.size(array, axis=1)))
+                return False
 
