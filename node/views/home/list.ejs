@@ -16,14 +16,11 @@
 
       <ul>
         <% for(i = 0; i < list.length; i++) { %>
-          <ul>
-              <li><a href="/list" class="nav-link"><%=i+1%></a></li>
-              <li><%=list[i].storeName %></li>
+              <li><a href="/list" class="nav-link"><%=list[i].storeName %></a></li>
               <li><%=list[i].storeLocation %></li>
-          </tr>
-          <br>
-          <br>
-        <% } %>
+              <br>
+              <br>
+          <% } %>
       </ul>
 
     </div>
