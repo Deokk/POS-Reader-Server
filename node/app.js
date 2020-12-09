@@ -5,17 +5,6 @@ const app = express();
 const port = 3000;
 const methodOverride = require('method-override');
 const router = require('./routes/home') (app);
-var mysql = require('mysql')
-
-var connection = mysql.createConnection({
-    host : "localhost",
-    port : "3306",
-    user : "root",
-    password : "0000",
-    database : "store_status"
-})
-
-connection.connect()
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:true}));
