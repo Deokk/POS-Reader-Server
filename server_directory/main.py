@@ -1,5 +1,5 @@
-from server_directory import server_pretty
+from server_directory import client_thread
 
 if __name__ == '__main__':
-    s = server_pretty.socket_communicator('localhost', 5001)
+    s = client_thread.socket_communicator('localhost', 5001)
     s.run()

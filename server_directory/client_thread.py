@@ -26,7 +26,8 @@ def work(conn: socket):
             # 재용이 함수 실행
             # rate = check_Table.calc_rate(img, table_pointer)
             # 데이터베이스 저장
-            print("socket closed")
+
+            print("received")
     except ValueError:
         print('input data incorrect')
 
