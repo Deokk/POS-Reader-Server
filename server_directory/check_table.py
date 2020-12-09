@@ -14,4 +14,4 @@ def calc_rate(img, info):
     table_info = info
     get_table(img, table_info)
     table = np.array(table_info).T
-    return (table[3][:]).mean()
+    return info[2], (table[3][:]).mean()
