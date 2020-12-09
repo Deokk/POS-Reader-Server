@@ -151,9 +151,7 @@ class dbConnector:
         response = self.excute_query(target)
         temp = response[0].get('tableLocList')
         response_as_numpy = np.array(ast.literal_eval(temp))
-        print(np.shape(response_as_numpy))
-        print(response_as_numpy)
-        return response_as_numpy
+        return response_as_numpy.astype('uint-8')
 
     def array_to_string(self,array):
         target_string = "["
