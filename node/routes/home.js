@@ -10,10 +10,14 @@ module.exports = function(app) {
     });
 
     app.get('/list', function(req, res) {
-        var sql = 'SELECT * FROM store_info'
-        conn.query(sql, function(err, rows, fields) {
-            if(err) console.log('query is not excuted. select fail...\n' + err);
-            else res.render('list.ejs', {list : rows});
+        var sql1 = 'SELECT * FROM store_info'
+        var sql2 = 'SELECT * FROM store_status'
+        conn.query(sql1, function(err1, rows1, fields1) {
+            if(err1) console.log('query is not excuted. select fail...\n' + err1);
+            else conn.query(sql2, function(err2, rows2, field2) {
+                if(err2) console.log('query is not excuted. select fail...\n' + err2);
+                else res.render('list.ejs', {list1 : rows1}, {list2 : rows2});
+            });
         });
     });
 }

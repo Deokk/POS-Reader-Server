@@ -15,11 +15,18 @@
       <h5>Market List From DataBase</h5>
 
       <ul>
-        <% for(i = 0; i < list.length; i++) { %>
-              <li><a href="/list" class="nav-link"></a><%=list[i].storeName %></li>
-              <li><%=list[i].storeLocation %></li>
-              <br>
-              <br>
+        <% for(i = 0; i < list1.length; i++) { %>
+          <li><%=list1[i].storeName %></li>
+          <p><%=list1[i].storeLocation %></p>
+          <% if list2[i].open==1 { %>
+            <p>현재 영업중</p>
+            <p><%=list2[i].currentStatus %></p>
+          <% }%>
+          <% else { %>
+            <p>영업 종료</p>
+          <% }%>
+          <br>
+          <br>
           <% } %>
       </ul>
 
