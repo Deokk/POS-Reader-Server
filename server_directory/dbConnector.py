@@ -4,9 +4,11 @@ import ast
 """
 design pattern :: Adapter
 """
+
 class dbConnector:
     connector = None
     cursor = None
+    CONSTANT_FIRST_ID = 101
 
     def __init__(self, host: str, port: int, user: str, pwd: str, db: str):
         self.connector = pymysql.connect(
@@ -27,26 +29,14 @@ class dbConnector:
         elif type(condition) == int:
             return self.cursor.fetchmany(condition)
 
-    def register_new_store(self,id:str, name:str, loc:str, maxSpace:int, open:int=0):
-        # str_for_info = "INSERT INTO store_info (storeID, storeName, storeLocation, maxSpace) VALUES ("+str(id)+", '" + name+"', '"+loc+"', "+maxSpace+");"
-        #
-        # print(str_for_info)
-        # self.excute_query(str_for_info)
-        # print(str_for_status)
-        # self.excute_query(str_for_status)
-        # self.connector.commit()
-        return True;
-
     def delete_store(self, id:str):
         str_for_status = "delete from store_info where storeID = "+str(id)
-        str_for_info = "delete from store_info where storeID = " + str(id)
 
         self.excute_query(str_for_status)
-        self.excute_query(str_for_info)
         self.connector.commit()
 
     def is_id_exist(self,id: str):
-        target = " SELECT * FROM `store_info` where storeID = '33';"
+        target = " SELECT * FROM `store_info` where storeID = "+str(id)+";"
         result = self.excute_query(target)
         if result is ():
             print("id 존재하지 않음 :: dbConnector.py line 35")
@@ -185,8 +175,8 @@ class dbConnector:
         response = self.excute_query(target)
         if(response==()):
             print("generate new id")
-            self.make_new_id(101)
-            return 101
+            self.make_new_id(self.CONSTANT_FIRST_ID)
+            return self.CONSTANT_FIRST_ID
         temp = response[0].get('storeID')
         self.make_new_id(int(temp)+1)
         return int(temp)+1
