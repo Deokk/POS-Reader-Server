@@ -28,8 +28,8 @@ class dbConnector:
             return self.cursor.fetchmany(condition)
 
     def register_new_store(self,id:str, name:str, loc:str, maxSpace:int, open:int=0):
-        str_for_info = "INSERT INTO store_info (storeID, storeName, storeLocation, maxSpace) VALUES ("+id+", '" + name+"', '"+loc+"', "+maxSpace+");"
-        str_for_status = "INSERT INTO store_info (storeID, open, currentStatus) VALUES ("+id+", " +str(open)+", 0);"
+        str_for_info = "INSERT INTO store_info (storeID, storeName, storeLocation, maxSpace) VALUES ("+str(id)+", '" + name+"', '"+loc+"', "+maxSpace+");"
+        str_for_status = "INSERT INTO store_info (storeID, open, currentStatus) VALUES ("+str(id)+", " +str(open)+", 0);"
 
         print(str_for_info)
         self.excute_query(str_for_info)
@@ -39,8 +39,8 @@ class dbConnector:
         return True;
 
     def delete_store(self, id:str):
-        str_for_status = "delete from store_info where storeID = "+id
-        str_for_info = "delete from store_info where storeID = " + id
+        str_for_status = "delete from store_info where storeID = "+str(id)
+        str_for_info = "delete from store_info where storeID = " + str(id)
 
         self.excute_query(str_for_status)
         self.excute_query(str_for_info)
@@ -57,7 +57,7 @@ class dbConnector:
 
     def set_current_status(self,id:str, current_status:int):
         try:
-            self.excute_query("UPDATE store_info SET maxSpace = "+str(current_status)+" where storeID = "+id+");")
+            self.excute_query("UPDATE store_info SET maxSpace = "+str(current_status)+" where storeID = "+str(id)+");")
             self.connector.commit()
             return True
         except:
@@ -65,7 +65,7 @@ class dbConnector:
 
     def get_current_status(self,id:str):
         try:
-            target = " SELECT currentStatus FROM store_info where storeID = "+id+";"
+            target = " SELECT currentStatus FROM store_info where storeID = "+str(id)+";"
             answer = self.excute_query(target)
             print(type(answer))
             print(answer)
@@ -76,7 +76,7 @@ class dbConnector:
 
     def set_store_open(self, id:str):
         try:
-            self.excute_query("UPDATE store_info SET currentStatus = 1 where storeID = "+id+");")
+            self.excute_query("UPDATE store_info SET currentStatus = 1 where storeID = "+str(id)+");")
             self.connector.commit()
             return True
         except:
@@ -84,7 +84,7 @@ class dbConnector:
 
     def set_store_close(self, id:str):
         try:
-            self.excute_query("UPDATE store_info SET open = 0 where storeID = "+id+");")
+            self.excute_query("UPDATE store_info SET open = 0 where storeID = "+str(id)+");")
             self.connector.commit()
             return True
         except:
@@ -92,7 +92,7 @@ class dbConnector:
 
     def get_store_open(self,id:str):
         try:
-            target = " SELECT open FROM store_info where storeID = "+id+";"
+            target = " SELECT open FROM store_info where storeID = "+str(id)+";"
             answer = self.excute_query(target)
             print(type(answer))
             print(answer)
@@ -103,7 +103,7 @@ class dbConnector:
 
     def set_max_table_count_of_store(self,id:str, max_table_count:int):
         try:
-            self.excute_query("UPDATE store_info SET maxSpace = "+str(max_table_count)+" where storeID = "+id+");")
+            self.excute_query("UPDATE store_info SET maxSpace = "+str(max_table_count)+" where storeID = "+str(id)+");")
             self.connector.commit()
             return True
         except:
@@ -111,7 +111,7 @@ class dbConnector:
 
     def get_max_table_count_of_store(self, id:str):
         try:
-            target = " SELECT maxSpace FROM store_info where storeID = "+id+";"
+            target = " SELECT maxSpace FROM store_info where storeID = "+str(id)+";"
             answer = self.excute_query(target)
             print(type(answer))
             print(answer)
@@ -122,7 +122,7 @@ class dbConnector:
 
     def set_store_name(self, id:str,name:str):
         try:
-            self.excute_query("UPDATE store_info SET maxSpace = "+name+" where storeID = "+id+");")
+            self.excute_query("UPDATE store_info SET maxSpace = "+name+" where storeID = "+str(id)+");")
             self.connector.commit()
             return True
         except:
@@ -130,7 +130,7 @@ class dbConnector:
 
     def set_store_location(self, id:str,location:str):
         try:
-            self.excute_query("UPDATE store_info SET maxSpace = "+location+" where storeID = "+id+");")
+            self.excute_query("UPDATE store_info SET maxSpace = "+location+" where storeID = "+str(id)+");")
             self.connector.commit()
             return True
         except:
@@ -138,7 +138,7 @@ class dbConnector:
 
     def set_empty_color(self,id:str, color:int):
         try:
-            self.excute_query("UPDATE store_info SET emptyColor = "+str(color)+" where storeID = "+id+");")
+            self.excute_query("UPDATE store_info SET emptyColor = "+str(color)+" where storeID = "+str(id)+");")
             self.connector.commit()
             return True
         except:
@@ -146,7 +146,7 @@ class dbConnector:
 
     def get_empty_color(self,id:str):
         try:
-            target = " SELECT emptyColor FROM store_info where storeID = "+id+";"
+            target = " SELECT emptyColor FROM store_info where storeID = "+str(id)+";"
             answer = self.excute_query(target)
             print(type(answer))
             print(answer)
@@ -160,13 +160,13 @@ class dbConnector:
         if not self.array_input_valid(array):
             return False
         array = self.array_to_string(array)
-        sql_command = """update store_info set tableLocList = ('"""+array+"""') where storeID="""+id+"""; """
+        sql_command = """update store_info set tableLocList = ('"""+array+"""') where storeID="""+str(id)+"""; """
         self.excute_query(sql_command,id)
         self.connector.commit()
         return False
 
     def get_table_loc_list(self, id):
-        target = """ SELECT tableLocList FROM store_info where storeID = """ + id + """;"""
+        target = """ SELECT tableLocList FROM store_info where storeID = """ + str(id) + """;"""
         response = self.excute_query(target)
         temp = response[0].get('tableLocList')
         response_as_numpy = np.array(ast.literal_eval(temp))
@@ -201,14 +201,14 @@ class dbConnector:
     def array_input_valid(self, array):
         # case : array가 1차원 (가게에 테이블이 하나면서 x, y가 있는 경우)
         if np.size(array, axis=0) is np.size(array):
-            if np.size(array) is 4:
+            if np.size(array) is 2:
                 return True
             else:
                 print("x,y,color,bool중 누락된 것이 있거나 값이 더 들어왔습니다.")
                 print("들어온 데이터의 개수 : {}".format(np.size(array)))
                 return False
         else:
-            if np.size(array, axis=1) is 4:
+            if np.size(array, axis=1) is 2:
                 return True
             else:
                 print("x,y,color,bool 중 누락된 것이 있거나 값이 더 들어왔습니다.")
