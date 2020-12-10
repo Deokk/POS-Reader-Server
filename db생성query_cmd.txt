@@ -29,7 +29,7 @@ create table store_info(
 storeID int(4) not null auto_increment primary key,
 storeName varchar(20) not null,
 storeLocation varchar(50) not null,
-tableLockList JSON,
+tableLocList JSON,
 maxSpace tinyint UNSIGNED NOT NULL,
 open bool default false not null,
 currentStatus tinyint unsigned NOT NULL default 0,
