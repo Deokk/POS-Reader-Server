@@ -49,12 +49,12 @@ def work(conn: socket):
                     point_size = int((conn.recv(4)).decode())
                     point = conn.recv(point_size).decode()
                     color_size = int((conn.recv(4)).decode())
-                    color = ast.literal_eval(conn.recv(color_size).decode())
+                    color = int(conn.recv(color_size).decode())
 
                     db.set_table_loc_list(company_id, point)
-                    db.set_empty_color(company_id, text)
-                    print(str(point))
-                    # 데이터베이스에 포지션 넣기
+                    db.set_empty_color(company_id, color)
+                    print(point, color)
+
                 else:
                     text_size = int((conn.recv(4)).decode())
                     text = conn.recv(text_size).decode()
