@@ -46,10 +46,12 @@ class dbConnector:
         else:
             return True
 
-    def set_current_status(self, id: str, current_status: int):
+    def set_current_status(self, id: str, current_status: float):
         try:
+            current_status = current_status*100
             self.excute_query(
                 "UPDATE store_info SET currentStatus = " + str(current_status) + " where storeID = " + str(id) + ";")
+            print("update Done!")
             self.connector.commit()
             return True
         except:
