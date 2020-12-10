@@ -11,7 +11,7 @@ def work(conn: socket):
     company_id = None
     try:
         db = dbConnector.dbConnector('localhost', 3306, 'root', '0000', 'software_engineering');
-        print("dbConnection successed!")
+        print("dbConnection succeeded!")
 
         while True:
             company_id = int((conn.recv(4)).decode())
@@ -21,7 +21,6 @@ def work(conn: socket):
 
             print(f"socket: c_id: {company_id}, j_num: {job_number} received")
             if job_number == 0:  # 매장 신규 생성 시그널
-                # temp = 1000  # 데이터베이스에서 새로운 번호 할당받기
                 new_id = db.get_last_id()
                 print("새로운 아이디는 {}입니다.".format(new_id))
                 conn.sendall(str(new_id).encode())

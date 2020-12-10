@@ -1,9 +1,11 @@
 import pymysql
 import numpy as np
 import ast
+
 """
 design pattern :: Adapter
 """
+
 
 class dbConnector:
     connector = None
@@ -29,14 +31,14 @@ class dbConnector:
         elif type(condition) == int:
             return self.cursor.fetchmany(condition)
 
-    def delete_store(self, id:str):
-        str_for_status = "delete from store_info where storeID = "+str(id)
+    def delete_store(self, id: str):
+        str_for_status = "delete from store_info where storeID = " + str(id)
 
         self.excute_query(str_for_status)
         self.connector.commit()
 
-    def is_id_exist(self,id: str):
-        target = " SELECT * FROM `store_info` where storeID = "+str(id)+";"
+    def is_id_exist(self, id: str):
+        target = " SELECT * FROM `store_info` where storeID = " + str(id) + ";"
         result = self.excute_query(target)
         if result is ():
             print("id 존재하지 않음 :: dbConnector.py line 35")
@@ -44,17 +46,18 @@ class dbConnector:
         else:
             return True
 
-    def set_current_status(self,id:str, current_status:int):
+    def set_current_status(self, id: str, current_status: int):
         try:
-            self.excute_query("UPDATE store_info SET currentStatus = "+str(current_status)+" where storeID = "+str(id)+";")
+            self.excute_query(
+                "UPDATE store_info SET currentStatus = " + str(current_status) + " where storeID = " + str(id) + ";")
             self.connector.commit()
             return True
         except:
             return False
 
-    def get_current_status(self,id:str):
+    def get_current_status(self, id: str):
         try:
-            target = " SELECT currentStatus FROM store_info where storeID = "+str(id)+";"
+            target = " SELECT currentStatus FROM store_info where storeID = " + str(id) + ";"
             answer = self.excute_query(target)
             print(type(answer))
             print(answer)
@@ -63,25 +66,25 @@ class dbConnector:
             print("오류")
             return False
 
-    def set_store_open(self, id:str):
+    def set_store_open(self, id: str):
         try:
-            self.excute_query("UPDATE store_info SET open = 1 where storeID = "+str(id)+";")
+            self.excute_query("UPDATE store_info SET open = 1 where storeID = " + str(id) + ";")
             self.connector.commit()
             return True
         except:
             return False
 
-    def set_store_close(self, id:str):
+    def set_store_close(self, id: str):
         try:
-            self.excute_query("UPDATE store_info SET open = 0 where storeID = "+str(id)+";")
+            self.excute_query("UPDATE store_info SET open = 0 where storeID = " + str(id) + ";")
             self.connector.commit()
             return True
         except:
             return False
 
-    def get_store_open(self,id:str):
+    def get_store_open(self, id: str):
         try:
-            target = " SELECT open FROM store_info where storeID = "+str(id)+";"
+            target = " SELECT open FROM store_info where storeID = " + str(id) + ";"
             answer = self.excute_query(target)
             print(type(answer))
             print(answer)
@@ -90,17 +93,18 @@ class dbConnector:
             print("오류")
             return False
 
-    def set_max_table_count_of_store(self,id:str, max_table_count:int):
+    def set_max_table_count_of_store(self, id: str, max_table_count: int):
         try:
-            self.excute_query("UPDATE store_info SET maxSpace = "+str(max_table_count)+" where storeID = "+str(id)+";")
+            self.excute_query(
+                "UPDATE store_info SET maxSpace = " + str(max_table_count) + " where storeID = " + str(id) + ";")
             self.connector.commit()
             return True
         except:
             return False
 
-    def get_max_table_count_of_store(self, id:str):
+    def get_max_table_count_of_store(self, id: str):
         try:
-            target = " SELECT maxSpace FROM store_info where storeID = "+str(id)+";"
+            target = " SELECT maxSpace FROM store_info where storeID = " + str(id) + ";"
             answer = self.excute_query(target)
             print(type(answer))
             print(answer)
@@ -109,34 +113,35 @@ class dbConnector:
             print("오류")
             return False
 
-    def set_store_name(self, id:str,name:str):
+    def set_store_name(self, id: str, name: str):
         try:
-            self.excute_query("UPDATE store_info SET storeName = '"+name+"' where storeID = "+str(id)+";")
+            self.excute_query("UPDATE store_info SET storeName = '" + name + "' where storeID = " + str(id) + ";")
             self.connector.commit()
             return True
         except:
             return False
 
-    def set_store_location(self, id:str,location:str):
+    def set_store_location(self, id: str, location: str):
         try:
-            target = """UPDATE store_info set storeLocation = '"""+location+"""' where storeID = """+str(id)+""";"""
+            target = """UPDATE store_info set storeLocation = '""" + location + """' where storeID = """ + str(
+                id) + """;"""
             self.excute_query(target)
             self.connector.commit()
             return True
         except:
             return False
 
-    def set_empty_color(self,id:str, color:int):
+    def set_empty_color(self, id: str, color: int):
         try:
-            self.excute_query("UPDATE store_info SET emptyColor = "+str(color)+" where storeID = "+str(id)+";")
+            self.excute_query("UPDATE store_info SET emptyColor = " + str(color) + " where storeID = " + str(id) + ";")
             self.connector.commit()
             return True
         except:
             return False
 
-    def get_empty_color(self,id:str):
+    def get_empty_color(self, id: str):
         try:
-            target = " SELECT emptyColor FROM store_info where storeID = "+str(id)+";"
+            target = " SELECT emptyColor FROM store_info where storeID = " + str(id) + ";"
             answer = self.excute_query(target)
             print(type(answer))
             print(answer)
@@ -145,13 +150,14 @@ class dbConnector:
             print("오류")
             return False
 
-    def set_table_loc_list(self, id:str,array):
-        #array = np.asarray(array)
+    def set_table_loc_list(self, id: str, array):
+        # array = np.asarray(array)
         # if not self.array_input_valid(array):
         #     return False
         # array = self.array_to_string(array)
-        sql_command = """update store_info set tableLocList = ('"""+array+"""') where storeID="""+str(id)+"""; """
-        self.excute_query(sql_command,id)
+        sql_command = """update store_info set tableLocList = ('""" + array + """') where storeID=""" + str(
+            id) + """; """
+        self.excute_query(sql_command, id)
         self.connector.commit()
         return False
 
@@ -162,9 +168,9 @@ class dbConnector:
         response_as_numpy = np.array(ast.literal_eval(temp))
         return response_as_numpy.astype('uint-8')
 
-    def make_new_id(self,id:str):
+    def make_new_id(self, id: str):
         try:
-            target = """INSERT INTO store_info(storeID) values("""+str(id)+""");"""
+            target = """INSERT INTO store_info(storeID) values(""" + str(id) + """);"""
             self.excute_query(target)
             self.connector.commit()
             return True
@@ -174,28 +180,28 @@ class dbConnector:
     def get_last_id(self):
         target = """select storeID from store_info order by storeID desc limit 1;"""
         response = self.excute_query(target)
-        if(response==()):
+        if (response == ()):
             print("generate new id")
             self.make_new_id(self.CONSTANT_FIRST_ID)
             return self.CONSTANT_FIRST_ID
         temp = response[0].get('storeID')
-        self.make_new_id(int(temp)+1)
-        return int(temp)+1
+        self.make_new_id(int(temp) + 1)
+        return int(temp) + 1
 
-    def array_to_string(self,array):
+    def array_to_string(self, array):
         target_string = "["
-        if np.size(array) is np.size(array, axis=0): # 1차원 배열
+        if np.size(array) is np.size(array, axis=0):  # 1차원 배열
             for i in range(np.size(array) - 1):
                 target_string = target_string + str(array[i]) + ", "
-            target_string = target_string + str(array[-1])+"]"
+            target_string = target_string + str(array[-1]) + "]"
         else:
             for i in range(np.size(array, axis=0)):
                 target_string = target_string + "["
-                for j in range(np.size(array,axis=1) - 1):
+                for j in range(np.size(array, axis=1) - 1):
                     target_string = target_string + str(array[i][j]) + ", "
                 target_string = target_string + str(array[i][-1]) + "]"
-                if i is not np.size(array,axis=0)-1:
-                    target_string +=", "
+                if i is not np.size(array, axis=0) - 1:
+                    target_string += ", "
             target_string = target_string + "]"
         return target_string
 
