@@ -3,6 +3,7 @@ import numpy as np
 
 def get_table(img, table_info, color):
     score = []
+    color
     for num, i in enumerate(table_info):
         if img[int(i[0])][int(i[1])] == color:
             score.append(0)

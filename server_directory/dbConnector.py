@@ -143,9 +143,9 @@ class dbConnector:
         try:
             target = " SELECT emptyColor FROM store_info where storeID = " + str(id) + ";"
             answer = self.excute_query(target)
-            print(type(answer))
+            response = answer[0].get('emptyColor')
             print(answer)
-            return True
+            return response
         except:
             print("오류")
             return False
@@ -166,7 +166,7 @@ class dbConnector:
         response = self.excute_query(target)
         temp = response[0].get('tableLocList')
         response_as_numpy = np.array(ast.literal_eval(temp))
-        return response_as_numpy.astype('uint-8')
+        return response_as_numpy.astype('int')
 
     def make_new_id(self, id: str):
         try:
