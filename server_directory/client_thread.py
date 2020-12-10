@@ -4,7 +4,8 @@ import threading
 import cv2
 import numpy as np
 import ast
-from . import dbConnector
+from server_directory import check_table
+from server_directory import dbConnector
 
 
 def work(conn: socket):
@@ -40,7 +41,11 @@ def work(conn: socket):
                 #     #
 
                 # 재용이 함수 실행
-                # rate = check_Table.calc_rate(img, table_pointer)
+                table_pointer = db.get_table_loc_list(company_id)
+                color = db.get_empty_color(company_id)
+                rate = check_table.calc_rate(img, table_pointer, color)
+                print(rate)
+                db.set_current_status(company_id,rate)
                 # 데이터베이스 저장
                 print("received")
             elif job_number == 2:  # 설정 변경 시그널
