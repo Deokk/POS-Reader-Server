@@ -31,15 +31,6 @@ def work(conn: socket):
                 encoded_img = np.fromstring(img, dtype=np.uint8)
                 img = cv2.imdecode(encoded_img, cv2.IMREAD_GRAYSCALE)
 
-                # 만약 데이터베이스에 id가 없다면?
-                # if not db.is_id_exist(company_id):
-                #     # if company_id is DB 받을 부분:
-                #     # DB에 신규 ID 생성
-                #     #     return "생성된 company_ID는 {ID} 입니다. 매장 정보 설정을 통해 설정해주세요."
-                #     new_id = db.get_last_id()+1 # 신규 ID 배정
-                #     print("새로운 아이디는 {}입니다.".format(new_id))
-                #     #
-
                 # 재용이 함수 실행
                 table_pointer = db.get_table_loc_list(company_id)
                 color = db.get_empty_color(company_id)
