@@ -28,14 +28,13 @@ class dbConnector:
             return self.cursor.fetchmany(condition)
 
     def register_new_store(self,id:str, name:str, loc:str, maxSpace:int, open:int=0):
-        str_for_info = "INSERT INTO store_info (storeID, storeName, storeLocation, maxSpace) VALUES ("+str(id)+", '" + name+"', '"+loc+"', "+maxSpace+");"
-        str_for_status = "INSERT INTO store_info (storeID, open, currentStatus) VALUES ("+str(id)+", " +str(open)+", 0);"
-
-        print(str_for_info)
-        self.excute_query(str_for_info)
-        print(str_for_status)
-        self.excute_query(str_for_status)
-        self.connector.commit()
+        # str_for_info = "INSERT INTO store_info (storeID, storeName, storeLocation, maxSpace) VALUES ("+str(id)+", '" + name+"', '"+loc+"', "+maxSpace+");"
+        #
+        # print(str_for_info)
+        # self.excute_query(str_for_info)
+        # print(str_for_status)
+        # self.excute_query(str_for_status)
+        # self.connector.commit()
         return True;
 
     def delete_store(self, id:str):
@@ -172,14 +171,25 @@ class dbConnector:
         response_as_numpy = np.array(ast.literal_eval(temp))
         return response_as_numpy.astype('uint-8')
 
+    def make_new_id(self,id:str):
+        try:
+            target = """INSERT INTO store_info(storeID) values("""+str(id)+""");"""
+            self.excute_query(target)
+            self.connector.commit()
+            return True
+        except:
+            return False
+
     def get_last_id(self):
         target = """select storeID from store_info order by storeID desc limit 1;"""
         response = self.excute_query(target)
         if(response==()):
             print("generate new id")
-            return 100
+            self.make_new_id(101)
+            return 101
         temp = response[0].get('storeID')
-        return int(temp)
+        self.make_new_id(int(temp)+1)
+        return int(temp)+1
 
     def array_to_string(self,array):
         target_string = "["
