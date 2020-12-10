@@ -1,31 +1,6 @@
 create database software_engineering;
 use software_engineering;
 create table store_info(
-storeID int not null auto_increment primary key,
-storeName varchar(20) not null,
-storeLocation varchar(50) not null,
-tableLockList JSON,
-maxSpace INT(11)UNSIGNED NOT NULL
-);
-create table store_status(
-storeID int(11) not null,
-open bool default false not null,
-currentStatus tinyint unsigned NOT NULL default 0
-);
-alter table store_status add constraint rule1 foreign key (storeID)
-references store_info (storeID) ON UPDATE CASCADE;
-alter table store_status add constraint rule2 foreign key (storeID)
-references store_info (storeID) ON DELETE CASCADE;
-alter table store_info add emptyColor tinyint unsigned not null default 255;
-desc store_status;
-desc store_info;
-예전
--------------------------------------------
-
-
-create database software_engineering;
-use software_engineering;
-create table store_info(
 storeID int(4) not null auto_increment primary key,
 storeName varchar(20),
 storeLocation varchar(50),
@@ -36,5 +11,3 @@ currentStatus tinyint unsigned NOT NULL default 0,
 emptyColor tinyint unsigned NOT NULL default 255
 );
 desc store_info;
-
-새거
