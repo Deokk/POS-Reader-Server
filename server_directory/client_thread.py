@@ -8,12 +8,14 @@ from server_directory import dbConnector
 
 
 def work(conn: socket):
+    company_id = None
     try:
         db = dbConnector.dbConnector('localhost', 3306, 'root', '0000', 'software_engineering');
         print("dbConnection successed!")
-        db.set_store_open()
+
         while True:
             company_id = int((conn.recv(4)).decode())
+            db.set_store_open(company_id)
             job_number = int((conn.recv(4)).decode())
 
             print(f"socket: c_id: {company_id}, j_num: {job_number} received")
@@ -27,8 +29,6 @@ def work(conn: socket):
                 img = conn.recv(img_size)
                 encoded_img = np.fromstring(img, dtype=np.uint8)
                 img = cv2.imdecode(encoded_img, cv2.IMREAD_GRAYSCALE)
-                # cv2.imshow('gray', img)
-                # cv2.waitKey(0)
 
                 # 만약 데이터베이스에 id가 없다면?
                 # if not db.is_id_exist(company_id):
@@ -73,11 +73,11 @@ def work(conn: socket):
 
     except ValueError:
         print('input data incorrect')
-        db.set_store_close()
+        db.set_store_close(company_id)
         conn.close()
     except ConnectionError:
         print('Connection lost')
-        db.set_store_close()
+        db.set_store_close(company_id)
         conn.close()
 
 
