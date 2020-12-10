@@ -46,7 +46,7 @@ class dbConnector:
 
     def set_current_status(self,id:str, current_status:int):
         try:
-            self.excute_query("UPDATE store_info SET maxSpace = "+str(current_status)+" where storeID = "+str(id)+");")
+            self.excute_query("UPDATE store_info SET currentStatus = "+str(current_status)+" where storeID = "+str(id)+";")
             self.connector.commit()
             return True
         except:
@@ -65,7 +65,7 @@ class dbConnector:
 
     def set_store_open(self, id:str):
         try:
-            self.excute_query("UPDATE store_info SET currentStatus = 1 where storeID = "+str(id)+");")
+            self.excute_query("UPDATE store_info SET open = 1 where storeID = "+str(id)+";")
             self.connector.commit()
             return True
         except:
@@ -73,7 +73,7 @@ class dbConnector:
 
     def set_store_close(self, id:str):
         try:
-            self.excute_query("UPDATE store_info SET open = 0 where storeID = "+str(id)+");")
+            self.excute_query("UPDATE store_info SET open = 0 where storeID = "+str(id)+";")
             self.connector.commit()
             return True
         except:
@@ -92,7 +92,7 @@ class dbConnector:
 
     def set_max_table_count_of_store(self,id:str, max_table_count:int):
         try:
-            self.excute_query("UPDATE store_info SET maxSpace = "+str(max_table_count)+" where storeID = "+str(id)+");")
+            self.excute_query("UPDATE store_info SET maxSpace = "+str(max_table_count)+" where storeID = "+str(id)+";")
             self.connector.commit()
             return True
         except:
@@ -111,7 +111,7 @@ class dbConnector:
 
     def set_store_name(self, id:str,name:str):
         try:
-            self.excute_query("UPDATE store_info SET maxSpace = "+name+" where storeID = "+str(id)+");")
+            self.excute_query("UPDATE store_info SET storeName = '"+name+"' where storeID = "+str(id)+";")
             self.connector.commit()
             return True
         except:
@@ -119,7 +119,8 @@ class dbConnector:
 
     def set_store_location(self, id:str,location:str):
         try:
-            self.excute_query("UPDATE store_info SET maxSpace = "+location+" where storeID = "+str(id)+");")
+            target = """UPDATE store_info set storeLocation = '"""+location+"""' where storeID = """+str(id)+""";"""
+            self.excute_query(target)
             self.connector.commit()
             return True
         except:
@@ -127,7 +128,7 @@ class dbConnector:
 
     def set_empty_color(self,id:str, color:int):
         try:
-            self.excute_query("UPDATE store_info SET emptyColor = "+str(color)+" where storeID = "+str(id)+");")
+            self.excute_query("UPDATE store_info SET emptyColor = "+str(color)+" where storeID = "+str(id)+";")
             self.connector.commit()
             return True
         except:
@@ -145,10 +146,10 @@ class dbConnector:
             return False
 
     def set_table_loc_list(self, id:str,array):
-        array = np.asarray(array)
-        if not self.array_input_valid(array):
-            return False
-        array = self.array_to_string(array)
+        #array = np.asarray(array)
+        # if not self.array_input_valid(array):
+        #     return False
+        # array = self.array_to_string(array)
         sql_command = """update store_info set tableLocList = ('"""+array+"""') where storeID="""+str(id)+"""; """
         self.excute_query(sql_command,id)
         self.connector.commit()
