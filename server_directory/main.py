@@ -1,4 +1,4 @@
-from server_directory import client_thread
+from . import client_thread
 
 if __name__ == '__main__':
     s = client_thread.socket_communicator('localhost', 5001)

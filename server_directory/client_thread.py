@@ -4,7 +4,7 @@ import threading
 import cv2
 import numpy as np
 import ast
-from server_directory import dbConnector
+from . import dbConnector
 
 
 def work(conn: socket):
